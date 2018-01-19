@@ -1,0 +1,165 @@
+<html>
+<head>
+  <script type="text/javascript">
+  PATH_TO_CONV1_KERNEL = 'visualizations/0_conv1_kernel/'
+  PATH_TO_CONV1 = 'visualizations/1_conv1/'
+  PATH_TO_RELU = 'visualizations/2_conv1+relu/'
+  PATH_TO_PRIMARY_CAPS = 'visualizations/3_primary_caps/'
+
+  drawPage = (path) => {
+    var allImages = ''
+
+    for (var i = 0; i < 256; i++) {
+      allImages += `<img class="image-thumb" data-path="${path}" data-index="${i}" onclick="imageClicked(event)" src="${path + i}.png">`
+    }
+
+    document.getElementById('photos').innerHTML = allImages
+  }
+
+  drawImage = (path, index) => {
+    var image = `<img src="${path + index}.png">`
+    document.getElementById('photo').innerHTML = image
+  }
+
+  imageClicked = (e) => {
+    var images = document.getElementsByClassName('image-thumb')
+
+    for (var i = 0; i < images.length; i++) {
+      images[i].classList.remove('active')
+    }
+
+    drawImage(e.target.dataset.path, e.target.dataset.index)
+    e.target.classList.add('active')
+  }
+
+  buttonClicked = (e) => {
+    var tabs = document.getElementsByClassName('tab')
+
+    for (var i = 0; i < tabs.length; i++) {
+      tabs[i].classList.remove('active')
+    }
+
+    switch(e.target.id) {
+      case 'c1_kernel':
+        drawPage(PATH_TO_CONV1_KERNEL)
+        drawImage(PATH_TO_CONV1_KERNEL, 0)
+        break
+      case 'c1':
+        drawPage(PATH_TO_CONV1)
+        drawImage(PATH_TO_CONV1, 0)
+        break
+      case 'c1_relu':
+        drawPage(PATH_TO_RELU)
+        drawImage(PATH_TO_RELU, 0)
+        break
+      case 'prim_caps':
+        drawPage(PATH_TO_PRIMARY_CAPS)
+        drawImage(PATH_TO_PRIMARY_CAPS, 0)
+        break
+    }
+    e.target.classList.add('active')
+  }
+
+  document.onreadystatechange = () => {
+    if (document.readyState === 'complete') {
+      drawPage(PATH_TO_CONV1_KERNEL)
+      drawImage(PATH_TO_CONV1_KERNEL, 0)
+    }
+  }
+  </script>
+  <style>
+  html {
+    font-family: sans-serif;
+    font-size: 12px;
+    background-color: #282c34;
+  }
+
+  * {
+    padding: 0;
+    margin: 0;
+  }
+
+  .tabs {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    background-color: #21252b;
+    border-bottom: 1px solid #181a1f;
+    height: 29px;
+  }
+
+  .gap {
+    height: 29px;
+  }
+
+  .tab {
+    cursor: pointer;
+    height: 100%;
+    width: 263px;
+    border-right: 1px solid #181a1f;
+    color: #6b727d;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .tab.active {
+    background-color: #282c34;
+    border-bottom: 1px solid #282c34;
+    color: #d7dae0;
+  }
+
+  .body {
+    display: flex;
+  }
+
+  #photos {
+    flex: 1;
+    margin: 50px 50px 0 50px;
+    display: grid;
+    grid-template: repeat(16, 1fr) / repeat(16, 1fr);
+    grid-gap: 2px;
+  }
+
+  #photo {
+    flex: 1;
+    margin: 50px 50px 0 50px;
+    max-width: 660px;
+  }
+
+  #photos img {
+    width: 100%;
+    height: auto;
+    image-rendering: crisp-edges;
+    border-radius: 2px;
+    box-sizing: border-box;
+  }
+
+  #photos img.active {
+    border: 2px solid #568af2;
+  }
+
+  #photo img {
+    width: 100%;
+    height: auto;
+    image-rendering: crisp-edges;
+    border-radius: 2px;
+  }
+  </style>
+</head>
+<body>
+  <!-- The comments remove annoying gaps -->
+  <div class="tabs"><!--
+    --><div class="tab active" onclick="buttonClicked(event)" id="c1_kernel">Conv1 Kernel</div><!--
+    --><div class="tab" onclick="buttonClicked(event)" id="c1">Conv1</div><!--
+    --><div class="tab" onclick="buttonClicked(event)" id="c1_relu">Conv1 + ReLU</div><!--
+    --><div class="tab" onclick="buttonClicked(event)" id="prim_caps">Primary Caps</div>
+  </div>
+  <div class="gap"></div>
+  <div class="body">
+    <section id="photos"></section>
+    <section id="photo"></section>
+  </div>
+</body>
+</html>
