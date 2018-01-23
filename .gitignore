@@ -1,3 +1,8 @@
+# Checkpoint files
+/tensorflow_checkpoint/model*
+/tensorflow_checkpoint/graph*
+/tensorflow_checkpoint/checkpoint*
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

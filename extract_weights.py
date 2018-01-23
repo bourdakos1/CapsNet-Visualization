@@ -9,7 +9,9 @@ PATH_TO_MODEL = os.path.join(PATH_TO_CKPT, MODEL_VERSION)
 
 PATH_TO_WEIGHTS = 'numpy_weights'
 PATH_TO_CONV1 = os.path.join(PATH_TO_WEIGHTS, 'conv1.weights.npz')
+PATH_TO_CONV1_BIAS = os.path.join(PATH_TO_WEIGHTS, 'conv1.bias.npz')
 PATH_TO_PRIMARY_CAPS = os.path.join(PATH_TO_WEIGHTS, 'primary_caps.weights.npz')
+PATH_TO_PRIMARY_CAPS_BIAS = os.path.join(PATH_TO_WEIGHTS, 'primary_caps.bias.npz')
 PATH_TO_DIGIT_CAPS = os.path.join(PATH_TO_WEIGHTS, 'digit_caps.weights.npz')
 PATH_TO_FULLY_CONNECTED1 = os.path.join(PATH_TO_WEIGHTS, 'fully_connected1.weights.npz')
 PATH_TO_FULLY_CONNECTED2 = os.path.join(PATH_TO_WEIGHTS, 'fully_connected2.weights.npz')
@@ -26,10 +28,20 @@ weights = sess.run('Conv1_layer/Conv/weights:0')
 with open(PATH_TO_CONV1, 'wb') as outfile:
     np.save(outfile, weights)
 
+# Conv1_layer/Conv/biases (DT_FLOAT) [256]
+bias = sess.run('Conv1_layer/Conv/biases:0')
+with open(PATH_TO_CONV1_BIAS, 'wb') as outfile:
+    np.save(outfile, bias)
+
 # PrimaryCaps_layer/Conv/weights (DT_FLOAT) [9,9,256,256]
 weights = sess.run('PrimaryCaps_layer/Conv/weights:0')
 with open(PATH_TO_PRIMARY_CAPS, 'wb') as outfile:
     np.save(outfile, weights)
+
+# PrimaryCaps_layer/Conv/biases (DT_FLOAT) [256]
+bias = sess.run('PrimaryCaps_layer/Conv/biases:0')
+with open(PATH_TO_PRIMARY_CAPS_BIAS, 'wb') as outfile:
+    np.save(outfile, bias)
 
 # DigitCaps_layer/routing/Weight (DT_FLOAT) [1,1152,10,8,16]
 weights = sess.run('DigitCaps_layer/routing/Weight:0')
