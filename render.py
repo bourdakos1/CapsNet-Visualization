@@ -60,7 +60,7 @@ for i in range(conv1.shape[3]):
 
     image.imsave(os.path.join(PATH_TO_CONV1_KERNEL, '{}.png'.format(i)), extracted_filter)
 
-    img = Image.open('1.png')
+    img = Image.open('0.png')
     arr2 = np.array(img.getdata(), dtype=np.uint8)
 
     arr2 = np.resize(arr2, (img.size[1], img.size[0], 4))
@@ -71,7 +71,7 @@ for i in range(conv1.shape[3]):
     # I ignore vmin because then it will premeturely ReLU.
     image.imsave(os.path.join(PATH_TO_CONV1, '{}.png'.format(i)), conv, cmap=CMAP, vmax=255)
 
-    conv = conv + conv1_bias[i] # Don't know if there is bias?
+    conv = conv + conv1_bias[i]
 
     conv = np.maximum(0, conv)
     output[:, :, i] = conv
@@ -90,11 +90,9 @@ for i in range(primary_caps.shape[3]):
 
     conv2 = np.squeeze(conv2)
 
-    conv2 = conv2 + primary_caps_bias[i] # Don't know if there is bias?
+    conv2 = conv2 + primary_caps_bias[i]
 
-    # The weights we have were trained without using ReLU, however testing has
-    # shown that doing ReLU on the PrimaryCaps layer increases accuracy.
-    # conv2 = np.maximum(0, conv2)
+    conv2 = np.maximum(0, conv2)
 
     primary_caps_output[:, :, i] = conv2
 

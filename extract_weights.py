@@ -4,7 +4,7 @@ import numpy as np
 import os
 
 PATH_TO_CKPT = 'tensorflow_checkpoint'
-MODEL_VERSION = 'model_epoch_0048_step_23421'
+MODEL_VERSION = 'model_epoch_0047_step_20591'
 PATH_TO_MODEL = os.path.join(PATH_TO_CKPT, MODEL_VERSION)
 
 PATH_TO_WEIGHTS = 'numpy_weights'
