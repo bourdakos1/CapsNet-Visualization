@@ -7,26 +7,22 @@ class Sidebar extends Component {
     activeItem: 0
   }
 
-  onItemClick = index => {
+  onItemClick = (name, index) => {
+    this.props.onInputClick(name)
     this.setState({
       activeItem: index
     })
   }
 
   render() {
-    var items = [
-      { name: '0.png' },
-      { name: '1.png' },
-      { name: '2.png' },
-      { name: '3.png' }
-    ]
+    const { inputs } = this.props
     return (
       <div>
         <div className="Sidebar">
-          {items.map((item, i) => (
+          {inputs.map((item, i) => (
             <SidebarItem
               onItemClick={this.onItemClick}
-              name={item.name}
+              name={item}
               active={i === this.state.activeItem}
               index={i}
             />

@@ -29,17 +29,17 @@ def natural_sortkey(string):
 def get_images():
     res = {}
     for input_dir in os.listdir('visualizations'):
-        res[input_dir] = {}
+        res[input_dir] = []
         layers_path = os.path.join('visualizations', input_dir)
         if os.path.isdir(layers_path):
-            for layer_dir in os.listdir(layers_path):
-                res[input_dir][layer_dir] = []
+            for i, layer_dir in enumerate(sorted(os.listdir(layers_path), key=natural_sortkey)):
+                res[input_dir].append([])
                 images_path = os.path.join(layers_path, layer_dir)
                 if os.path.isdir(images_path):
                     for image_file in sorted(os.listdir(images_path), key=natural_sortkey):
                         if fnmatch.fnmatch(image_file, '*.png'):
                             image_path = os.path.join(images_path, image_file)
-                            res[input_dir][layer_dir].append(image_path)
+                            res[input_dir][i].append(image_path)
     return jsonify(res)
 
 

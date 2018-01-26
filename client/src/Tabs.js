@@ -8,6 +8,7 @@ class Tabs extends Component {
   }
 
   onTabClick = index => {
+    this.props.onTabClick(index)
     this.setState({
       activeTab: index
     })

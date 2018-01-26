@@ -3,7 +3,8 @@ import './SidebarItem.css'
 
 class SidebarItem extends Component {
   onItemClick = () => {
-    this.props.onItemClick(this.props.index)
+    const { index, name } = this.props
+    this.props.onItemClick(name, index)
   }
 
   render() {
