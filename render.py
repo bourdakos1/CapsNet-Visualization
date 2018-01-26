@@ -1,4 +1,5 @@
 import os
+import sys
 import numpy as np
 from PIL import Image
 import matplotlib.pyplot as plt
@@ -7,7 +8,7 @@ from scipy import signal
 from matplotlib.colors import LinearSegmentedColormap
 
 PATH_TO_TEST_IMAGES_DIR = 'test_images'
-PATH_TO_TEST_IMAGE = '9_2.png'
+PATH_TO_TEST_IMAGE = sys.argv[1] # '1.png'
 
 # Black and white color map going from (0, 0, 0) "black" to (1, 1, 1) "white".
 CMAP = LinearSegmentedColormap.from_list('greyscale', ((0, 0, 0), (1, 1, 1)), N=256, gamma=1.0)
@@ -22,6 +23,7 @@ PATH_TO_CONV1_KERNEL = os.path.join(PATH_TO_VISUALIZATIONS, '0')
 PATH_TO_CONV1 = os.path.join(PATH_TO_VISUALIZATIONS, '1')
 PATH_TO_RELU = os.path.join(PATH_TO_VISUALIZATIONS, '2')
 PATH_TO_PRIMARY_CAPS = os.path.join(PATH_TO_VISUALIZATIONS, '3')
+PATH_TO_RECONSTRUCTION = os.path.join(PATH_TO_VISUALIZATIONS, '4')
 
 if not os.path.exists(PATH_TO_CONV1_KERNEL):
     os.mkdir(PATH_TO_CONV1_KERNEL)
@@ -31,6 +33,8 @@ if not os.path.exists(PATH_TO_RELU):
     os.mkdir(PATH_TO_RELU)
 if not os.path.exists(PATH_TO_PRIMARY_CAPS):
     os.mkdir(PATH_TO_PRIMARY_CAPS)
+if not os.path.exists(PATH_TO_RECONSTRUCTION):
+    os.mkdir(PATH_TO_RECONSTRUCTION)
 
 # Input directories for layer weights.
 PATH_TO_WEIGHTS = 'numpy_weights'
@@ -39,6 +43,12 @@ PATH_TO_WEIGHTS_CONV1_BIAS = os.path.join(PATH_TO_WEIGHTS, 'conv1.bias.npz')
 PATH_TO_WEIGHTS_PRIMARY_CAPS = os.path.join(PATH_TO_WEIGHTS, 'primary_caps.weights.npz')
 PATH_TO_WEIGHTS_PRIMARY_CAPS_BIAS = os.path.join(PATH_TO_WEIGHTS, 'primary_caps.bias.npz')
 PATH_TO_WEIGHTS_DIGIT_CAPS = os.path.join(PATH_TO_WEIGHTS, 'digit_caps.weights.npz')
+PATH_TO_WEIGHTS_FULLY_CONNECTED1 = os.path.join(PATH_TO_WEIGHTS, 'fully_connected1.weights.npz')
+PATH_TO_WEIGHTS_FULLY_CONNECTED2 = os.path.join(PATH_TO_WEIGHTS, 'fully_connected2.weights.npz')
+PATH_TO_WEIGHTS_FULLY_CONNECTED3 = os.path.join(PATH_TO_WEIGHTS, 'fully_connected3.weights.npz')
+PATH_TO_WEIGHTS_FULLY_CONNECTED1_BIAS = os.path.join(PATH_TO_WEIGHTS, 'fully_connected1.bias.npz')
+PATH_TO_WEIGHTS_FULLY_CONNECTED2_BIAS = os.path.join(PATH_TO_WEIGHTS, 'fully_connected2.bias.npz')
+PATH_TO_WEIGHTS_FULLY_CONNECTED3_BIAS = os.path.join(PATH_TO_WEIGHTS, 'fully_connected3.bias.npz')
 
 # Number of routing iterations to do in DigitCaps layer.
 NUMBER_OF_ROUNDS = 3
@@ -49,6 +59,12 @@ conv1_bias = np.load(PATH_TO_WEIGHTS_CONV1_BIAS)
 primary_caps = np.load(PATH_TO_WEIGHTS_PRIMARY_CAPS)
 primary_caps_bias = np.load(PATH_TO_WEIGHTS_PRIMARY_CAPS_BIAS)
 digit_caps = np.load(PATH_TO_WEIGHTS_DIGIT_CAPS)
+fully_connected1 = np.load(PATH_TO_WEIGHTS_FULLY_CONNECTED1)
+fully_connected2 = np.load(PATH_TO_WEIGHTS_FULLY_CONNECTED2)
+fully_connected3 = np.load(PATH_TO_WEIGHTS_FULLY_CONNECTED3)
+fully_connected1_bias = np.load(PATH_TO_WEIGHTS_FULLY_CONNECTED1_BIAS)
+fully_connected2_bias = np.load(PATH_TO_WEIGHTS_FULLY_CONNECTED2_BIAS)
+fully_connected3_bias = np.load(PATH_TO_WEIGHTS_FULLY_CONNECTED3_BIAS)
 
 output = np.empty((20, 20, 256))
 primary_caps_output = np.empty((6, 6, 256))
@@ -158,9 +174,42 @@ for x in range(0, NUMBER_OF_ROUNDS):
 
 # Estimate class
 y_proba = safe_norm(caps2_output, axis=-2)
-print(y_proba)
 
 y_proba_argmax = np.argmax(y_proba, axis=2)
 y_pred = np.squeeze(y_proba_argmax, axis=[1,2])
 
-print(y_pred)
+print('Prediction: {}'.format(y_pred))
+
+caps2_output = np.squeeze(caps2_output)
+reconstruction_input = caps2_output[y_pred]
+
+expit = lambda x: 1.0 / (1 + np.exp(-x))
+def sigmoid_function(signal):
+    # Prevent overflow.
+    signal = np.clip(signal, -500, 500)
+
+    # Calculate activation signal
+    return expit(signal)
+
+
+def ReLU_function(signal):
+    # Return the activation signal
+    return np.maximum(0, signal)
+
+
+output = reconstruction_input
+
+fully_connected1 = fully_connected1.reshape(10, 16, 512)[y_pred]
+
+signal = np.dot(output, fully_connected1) + fully_connected1_bias # bias
+output = ReLU_function(signal)
+
+signal = np.dot(output, fully_connected2) + fully_connected2_bias # bias
+output = ReLU_function(signal)
+
+signal = np.dot(output, fully_connected3) + fully_connected3_bias # bias
+output = sigmoid_function(signal)
+
+output = output.reshape(28,28)
+
+image.imsave(os.path.join(PATH_TO_RECONSTRUCTION, '{}.png'.format(0)), output, cmap=CMAP, vmin=0, vmax=1)

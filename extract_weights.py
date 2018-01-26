@@ -16,6 +16,9 @@ PATH_TO_DIGIT_CAPS = os.path.join(PATH_TO_WEIGHTS, 'digit_caps.weights.npz')
 PATH_TO_FULLY_CONNECTED1 = os.path.join(PATH_TO_WEIGHTS, 'fully_connected1.weights.npz')
 PATH_TO_FULLY_CONNECTED2 = os.path.join(PATH_TO_WEIGHTS, 'fully_connected2.weights.npz')
 PATH_TO_FULLY_CONNECTED3 = os.path.join(PATH_TO_WEIGHTS, 'fully_connected3.weights.npz')
+PATH_TO_FULLY_CONNECTED1_BIAS = os.path.join(PATH_TO_WEIGHTS, 'fully_connected1.bias.npz')
+PATH_TO_FULLY_CONNECTED2_BIAS = os.path.join(PATH_TO_WEIGHTS, 'fully_connected2.bias.npz')
+PATH_TO_FULLY_CONNECTED3_BIAS = os.path.join(PATH_TO_WEIGHTS, 'fully_connected3.bias.npz')
 
 print_tensors_in_checkpoint_file(file_name=PATH_TO_MODEL, tensor_name='', all_tensors=False)
 
@@ -62,3 +65,18 @@ with open(PATH_TO_FULLY_CONNECTED2, 'wb') as outfile:
 weights = sess.run('Decoder/fully_connected_2/weights:0')
 with open(PATH_TO_FULLY_CONNECTED3, 'wb') as outfile:
     np.save(outfile, weights)
+
+# Decoder/fully_connected/biases (DT_FLOAT) [512]
+bias = sess.run('Decoder/fully_connected/biases:0')
+with open(PATH_TO_FULLY_CONNECTED1_BIAS, 'wb') as outfile:
+    np.save(outfile, bias)
+
+# Decoder/fully_connected_1/biases (DT_FLOAT) [1024]
+bias = sess.run('Decoder/fully_connected_1/biases:0')
+with open(PATH_TO_FULLY_CONNECTED2_BIAS, 'wb') as outfile:
+    np.save(outfile, bias)
+
+# Decoder/fully_connected_2/biases (DT_FLOAT) [784]
+bias = sess.run('Decoder/fully_connected_2/biases:0')
+with open(PATH_TO_FULLY_CONNECTED3_BIAS, 'wb') as outfile:
+    np.save(outfile, bias)
