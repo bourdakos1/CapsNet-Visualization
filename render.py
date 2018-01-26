@@ -6,15 +6,31 @@ import matplotlib.image as image
 from scipy import signal
 from matplotlib.colors import LinearSegmentedColormap
 
+PATH_TO_TEST_IMAGES_DIR = 'test_images'
+PATH_TO_TEST_IMAGE = '9_2.png'
+
 # Black and white color map going from (0, 0, 0) "black" to (1, 1, 1) "white".
 CMAP = LinearSegmentedColormap.from_list('greyscale', ((0, 0, 0), (1, 1, 1)), N=256, gamma=1.0)
 
 # Output directories for visualizations.
-PATH_TO_VISUALIZATIONS = 'visualizations'
-PATH_TO_CONV1_KERNEL = os.path.join(PATH_TO_VISUALIZATIONS, '0_conv1_kernel')
-PATH_TO_CONV1 = os.path.join(PATH_TO_VISUALIZATIONS, '1_conv1')
-PATH_TO_RELU = os.path.join(PATH_TO_VISUALIZATIONS, '2_conv1+relu')
-PATH_TO_PRIMARY_CAPS = os.path.join(PATH_TO_VISUALIZATIONS, '3_primary_caps')
+PATH_TO_ROOT = 'visualizations'
+PATH_TO_VISUALIZATIONS = os.path.join(PATH_TO_ROOT, PATH_TO_TEST_IMAGE)
+if not os.path.exists(PATH_TO_VISUALIZATIONS):
+    os.mkdir(PATH_TO_VISUALIZATIONS)
+
+PATH_TO_CONV1_KERNEL = os.path.join(PATH_TO_VISUALIZATIONS, '0')
+PATH_TO_CONV1 = os.path.join(PATH_TO_VISUALIZATIONS, '1')
+PATH_TO_RELU = os.path.join(PATH_TO_VISUALIZATIONS, '2')
+PATH_TO_PRIMARY_CAPS = os.path.join(PATH_TO_VISUALIZATIONS, '3')
+
+if not os.path.exists(PATH_TO_CONV1_KERNEL):
+    os.mkdir(PATH_TO_CONV1_KERNEL)
+if not os.path.exists(PATH_TO_CONV1):
+    os.mkdir(PATH_TO_CONV1)
+if not os.path.exists(PATH_TO_RELU):
+    os.mkdir(PATH_TO_RELU)
+if not os.path.exists(PATH_TO_PRIMARY_CAPS):
+    os.mkdir(PATH_TO_PRIMARY_CAPS)
 
 # Input directories for layer weights.
 PATH_TO_WEIGHTS = 'numpy_weights'
@@ -60,7 +76,7 @@ for i in range(conv1.shape[3]):
 
     image.imsave(os.path.join(PATH_TO_CONV1_KERNEL, '{}.png'.format(i)), extracted_filter)
 
-    img = Image.open('0.png')
+    img = Image.open(os.path.join(PATH_TO_TEST_IMAGES_DIR, PATH_TO_TEST_IMAGE))
     arr2 = np.array(img.getdata(), dtype=np.uint8)
 
     arr2 = np.resize(arr2, (img.size[1], img.size[0], 4))

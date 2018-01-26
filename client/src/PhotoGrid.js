@@ -7,36 +7,6 @@ class PhotoGrid extends Component {
     activeIndex: 0
   }
 
-  // componentDidMount() {
-  //   this.getImages()
-  // }
-  //
-  // getImages = () => {
-  //   return fetch('/images')
-  //     .then(response => {
-  //       if (response.status >= 200 && response.status < 300) {
-  //         return response
-  //       }
-  //       const error = new Error('Failed to load')
-  //       throw error
-  //     })
-  //     .then(response => {
-  //       return response.json().then(response => {
-  //         if (response.error != null) {
-  //           const error = new Error(response.error)
-  //           throw error
-  //         }
-  //         return response
-  //       })
-  //     })
-  //     .then(response => {
-  //       console.log(response)
-  //       // this.setState({
-  //       //   files: response.files
-  //       // })
-  //     })
-  // }
-
   onImageClick = i => {
     this.setState({
       activeIndex: i
@@ -44,7 +14,6 @@ class PhotoGrid extends Component {
   }
 
   render() {
-    console.log(this.props.files)
     return (
       <div className="PhotoGrid-container">
         <div className="PhotoGrid">
