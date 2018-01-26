@@ -1,0 +1,15 @@
+.Sidebar {
+  z-index: 1;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 200px;
+  background-color: #21252b;
+  border-right: 1px solid #181a1f;
+  padding-top: 30px;
+}
+
+.Sidebar-gap {
+  width: 200px;
+}

@@ -1,0 +1,12 @@
+.Photo {
+  flex: 2;
+  margin: 50px 50px 0 50px;
+  max-width: 660px;
+}
+
+.Photo img {
+  width: 100%;
+  height: auto;
+  image-rendering: crisp-edges;
+  border-radius: 2px;
+}

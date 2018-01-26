@@ -1,0 +1,13 @@
+.Tabs {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 200px;
+  background-color: #21252b;
+  border-bottom: 1px solid #181a1f;
+  height: 29px;
+}
+
+.Tabs-gap {
+  height: 29px;
+}

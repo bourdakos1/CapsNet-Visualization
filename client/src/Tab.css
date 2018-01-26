@@ -1,0 +1,16 @@
+.Tab {
+  cursor: pointer;
+  height: 100%;
+  width: 263px;
+  border-right: 1px solid #181a1f;
+  color: #6b727d;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.Tab-active {
+  background-color: #282c34;
+  border-bottom: 1px solid #282c34;
+  color: #d7dae0;
+}
