@@ -24,8 +24,7 @@ Point your browser to: http://localhost:5000
 
 Add your images to the `test_images` directory.
 
-And run:
-
+Run:
 ```bash
-python render.py FILENAME
+python render.py [filename]
 ```
