@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Tabs from './Tabs'
 import Sidebar from './Sidebar'
 import PhotoGrid from './PhotoGrid'
+import Reconstruction from './Reconstruction'
 import './App.css'
 
 class App extends Component {
@@ -75,7 +76,7 @@ class App extends Component {
       <div className="App">
         <Tabs onTabClick={this.onTabClick} />
         <Sidebar onInputClick={this.onInputClick} inputs={this.state.inputs} />
-        <PhotoGrid files={files} />
+        {activeTab === 3 ? <Reconstruction files={files}/> : <PhotoGrid files={files} />}
       </div>
     )
   }

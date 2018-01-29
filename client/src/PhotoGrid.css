@@ -19,6 +19,14 @@
 
 .PhotoGrid-container {
   flex: 1;
+  margin-top: 22px;
   display: flex;
   align-items: center;
+}
+
+
+.PhotoGrid-right {
+  flex: 2;
+  margin: 50px 50px 0 50px;
+  max-width: 660px;
 }

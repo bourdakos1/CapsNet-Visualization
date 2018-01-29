@@ -26,9 +26,9 @@ class PhotoGrid extends Component {
             />
           ))}
         </div>
-        <Photo
-          filePath={this.props.files[this.state.activeIndex]}
-        />
+        <div className="PhotoGrid-right">
+          <Photo filePath={this.props.files[this.state.activeIndex]} />
+        </div>
       </div>
     )
   }

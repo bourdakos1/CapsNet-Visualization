@@ -1,0 +1,36 @@
+.RangeSlider-slider {
+  position: relative;
+  width: auto;
+  background-color: #4b5364;
+  height: 2px;
+}
+
+.RangeSlider-nob {
+  position: absolute;
+  transform: translate(-50%, calc(-50% + 1px));
+  left: 0%;
+  height: 12px;
+  width: 12px;
+  background-color: #568af2;
+  border-radius: 100%;
+}
+
+.RangeSlider-lock {
+  position: absolute;
+  transform: translate(-50%, calc(-50% + 1px));
+  left: 20%;
+  height: 2px;
+  width: 2px;
+  background-color: white;
+  border-radius: 100%;
+}
+
+.RangeSlider-fill {
+  position: absolute;
+  width: 100%;
+  transform: translate(0, calc(-50% + 1px)) scaleX(calc(.2 - .0));
+  transform-origin: left;
+  left: 0%;
+  height: 2px;
+  background-color: #568af2;
+}

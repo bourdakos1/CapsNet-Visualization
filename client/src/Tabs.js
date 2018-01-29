@@ -17,9 +17,9 @@ class Tabs extends Component {
   render() {
     var tabs = [
       { name: 'Conv1 Kernel' },
-      { name: 'Conv1' },
       { name: 'Conv1 + ReLU' },
-      { name: 'Primary Caps' }
+      { name: 'Primary Caps' },
+      { name: 'Reconstruction' }
     ]
     return (
       <div>
@@ -33,7 +33,6 @@ class Tabs extends Component {
             />
           ))}
         </div>
-        <div className="Tabs-gap" />
       </div>
     )
   }

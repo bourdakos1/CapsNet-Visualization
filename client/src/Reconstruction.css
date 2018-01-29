@@ -1,0 +1,28 @@
+.Reconstruction {
+  flex: 3;
+  margin: 50px 50px 0 50px;
+
+  display: grid;
+  grid-template: repeat(16, 1fr) / repeat(1, 1fr);
+  grid-gap: 37px;
+  margin-top: 68px;
+  margin-bottom: 18px;
+}
+
+.Reconstruction-container {
+  flex: 1;
+  margin-top: 22px;
+  display: flex;
+  align-items: center;
+}
+
+.Reconstruction-right {
+  flex: 2;
+  margin: 50px 50px 0 50px;
+  max-width: 660px;
+}
+
+.Reconstruction-thumb {
+  margin-bottom: 10px;
+  border-radius: 2px;
+}
