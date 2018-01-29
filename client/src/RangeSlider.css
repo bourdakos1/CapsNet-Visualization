@@ -1,4 +1,4 @@
-.RangeSlider-slider {
+/* .RangeSlider-slider {
   position: relative;
   width: auto;
   background-color: #4b5364;
@@ -33,4 +33,31 @@
   left: 0%;
   height: 2px;
   background-color: #568af2;
+} */
+
+
+.RangeSlider-range {
+  -webkit-appearance: none;
+  background: linear-gradient(to right,
+    #cc181e 0%, #cc181e 50%,
+    #777 50%, #777 62.5%,
+    #444 62.5%, #444 100%);
+  cursor: pointer;
+  height: 2px;
+  width: 100%;
+}
+
+.RangeSlider-range::-webkit-slider-thumb {
+  transition: 200ms;
+  appearance: none;
+  background: #568af2;
+  border-radius: 100%;
+  height: 12px;
+  width: 12px;
+}
+
+.RangeSlider-range::-webkit-slider-thumb:active {
+  transition: 200ms;
+  height: 18px;
+  width: 18px;
 }

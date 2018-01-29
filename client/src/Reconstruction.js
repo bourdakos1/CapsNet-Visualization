@@ -112,11 +112,6 @@ class Reconstruction extends Component {
           {this.state.vector.map(item => (
             <RangeSlider
               default={item}
-              value={item}
-              onChange={this.handleChange}
-              min="-0.5"
-              max="0.5"
-              step="0.00000001"
             />
           ))}
         </div>
