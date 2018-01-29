@@ -61,9 +61,9 @@ class Reconstruction extends Component {
       })
   }
 
-  handleChange = e => {
+  handleChange = (index, value) => {
     var vector = this.state.vector
-    vector[e.target.id] = parseFloat(e.target.value)
+    vector[index] = parseFloat(value)
     this.setState(
       {
         vector: vector
@@ -109,9 +109,11 @@ class Reconstruction extends Component {
     return (
       <div className="Reconstruction-container">
         <div className="Reconstruction">
-          {this.state.vector.map(item => (
+          {this.state.vector.map((item, i) => (
             <RangeSlider
+              index={i}
               default={item}
+              onValueChange={this.handleChange}
             />
           ))}
         </div>

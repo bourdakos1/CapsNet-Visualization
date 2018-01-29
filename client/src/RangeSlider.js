@@ -8,8 +8,16 @@ class RangeSlider extends Component {
   }
 
   onValueChange = e => {
-    var lock = this.props.default
+    // THis is pretty ugly
+    if (this.state.lock == null) {
+      this.setState({
+        lock: this.props.default
+      })
+    }
+    var lock = this.state.lock || this.props.default
     var val = e.target.value
+
+    this.props.onValueChange(this.props.index, val)
 
     var x = val * 100 + 50
     var y = lock * 100 + 50
@@ -17,7 +25,7 @@ class RangeSlider extends Component {
     this.setState({
       length: Math.abs(x - y),
       start: Math.min(x, y),
-      value: e.target.value
+      value: val
     })
   }
 
