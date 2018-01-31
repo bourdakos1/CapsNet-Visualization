@@ -5,39 +5,25 @@ import './Reconstruction.css'
 
 class Reconstruction extends Component {
   state = {
-    vector: [
-      0.19660855,
-      0.20227766,
-      -0.1382982,
-      -0.31342947,
-      -0.16363921,
-      0.19339905,
-      -0.13441671,
-      0.43849992,
-      0.25891876,
-      -0.09146166,
-      0.28226382,
-      -0.29621538,
-      -0.35972677,
-      0.20608754,
-      -0.15802761,
-      0.12676048
-    ],
-    predicted: 9
+    file: null,
+    vector: [],
+    initialVector: [],
+    prediction: -1
   }
 
-  renderNewValues = () => {
-    fetch('/api/reconstruct', {
-      method: 'POST',
-      credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        vector: this.state.vector,
-        predicted: this.state.predicted
-      })
-    })
+  componentDidMount() {
+    this.getInitialValue()
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.json === this.props.json) {
+      return
+    }
+    this.getInitialValue()
+  }
+
+  getInitialValue = () => {
+    return fetch(this.props.json)
       .then(response => {
         if (response.status >= 200 && response.status < 300) {
           return response
@@ -56,14 +42,18 @@ class Reconstruction extends Component {
       })
       .then(response => {
         this.setState({
-          file: response.url
+          file: null,
+          vector: response['vector'],
+          initialVector: response['vector'],
+          prediction: response['prediction']
         })
       })
   }
 
   handleChange = (index, value) => {
-    var vector = this.state.vector
+    const vector = [...this.state.vector]
     vector[index] = parseFloat(value)
+
     this.setState(
       {
         vector: vector
@@ -77,7 +67,7 @@ class Reconstruction extends Component {
           },
           body: JSON.stringify({
             vector: this.state.vector,
-            predicted: this.state.predicted
+            predicted: this.state.prediction
           })
         })
           .then(response => {
@@ -112,7 +102,8 @@ class Reconstruction extends Component {
           {this.state.vector.map((item, i) => (
             <RangeSlider
               index={i}
-              default={item}
+              value={item}
+              default={this.state.initialVector[i]}
               onValueChange={this.handleChange}
             />
           ))}

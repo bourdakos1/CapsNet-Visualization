@@ -42,7 +42,7 @@ def get_images():
                 images_path = os.path.join(layers_path, layer_dir)
                 if os.path.isdir(images_path):
                     for image_file in sorted(os.listdir(images_path), key=natural_sortkey):
-                        if fnmatch.fnmatch(image_file, '*.png'):
+                        if fnmatch.fnmatch(image_file, '*.png') or fnmatch.fnmatch(image_file, '*.json'):
                             image_path = os.path.join(images_path, image_file)
                             res[input_dir][i].append(image_path)
     return jsonify(res)

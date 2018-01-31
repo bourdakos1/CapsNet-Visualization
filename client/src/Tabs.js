@@ -16,9 +16,11 @@ class Tabs extends Component {
 
   render() {
     var tabs = [
+      { name: 'Input' },
       { name: 'Conv1 Kernel' },
       { name: 'Conv1 + ReLU' },
       { name: 'Primary Caps' },
+      { name: 'Digit Caps' },
       { name: 'Reconstruction' }
     ]
     return (

@@ -6,5 +6,6 @@
   background-color: #21252b;
   border-bottom: 1px solid #181a1f;
   height: 29px;
-  clear: both;
+  /* clear: both; */
+  display: flex;
 }

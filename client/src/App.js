@@ -64,19 +64,25 @@ class App extends Component {
   render() {
     const { activeInput, activeTab, bulk } = this.state
     var files = []
+    var json = ''
     if (
       bulk != null &&
       activeInput in bulk &&
       bulk[activeInput].length > activeTab
     ) {
       files = bulk[activeInput][activeTab]
+      json = bulk[activeInput][6][0]
     }
 
     return (
       <div className="App">
         <Tabs onTabClick={this.onTabClick} />
         <Sidebar onInputClick={this.onInputClick} inputs={this.state.inputs} />
-        {activeTab === 3 ? <Reconstruction files={files}/> : <PhotoGrid files={files} />}
+        {activeTab === 5 ? (
+          <Reconstruction files={files} json={json} />
+        ) : (
+          <PhotoGrid files={files} />
+        )}
       </div>
     )
   }

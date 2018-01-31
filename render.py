@@ -6,9 +6,10 @@ import matplotlib.pyplot as plt
 import matplotlib.image as image
 from scipy import signal
 from matplotlib.colors import LinearSegmentedColormap
+import json
 
 PATH_TO_TEST_IMAGES_DIR = 'test_images'
-PATH_TO_TEST_IMAGE = sys.argv[1] # '1.png'
+PATH_TO_TEST_IMAGE = sys.argv[1]
 
 # Black and white color map going from (0, 0, 0) "black" to (1, 1, 1) "white".
 CMAP = LinearSegmentedColormap.from_list('greyscale', ((0, 0, 0), (1, 1, 1)), N=256, gamma=1.0)
@@ -19,22 +20,28 @@ PATH_TO_VISUALIZATIONS = os.path.join(PATH_TO_ROOT, PATH_TO_TEST_IMAGE)
 if not os.path.exists(PATH_TO_VISUALIZATIONS):
     os.mkdir(PATH_TO_VISUALIZATIONS)
 
-PATH_TO_CONV1_KERNEL = os.path.join(PATH_TO_VISUALIZATIONS, '0')
-PATH_TO_CONV1 = os.path.join(PATH_TO_VISUALIZATIONS, '1')
+PATH_TO_INPUT_IMAGE = os.path.join(PATH_TO_VISUALIZATIONS, '0')
+PATH_TO_CONV1_KERNEL = os.path.join(PATH_TO_VISUALIZATIONS, '1')
 PATH_TO_RELU = os.path.join(PATH_TO_VISUALIZATIONS, '2')
 PATH_TO_PRIMARY_CAPS = os.path.join(PATH_TO_VISUALIZATIONS, '3')
-PATH_TO_RECONSTRUCTION = os.path.join(PATH_TO_VISUALIZATIONS, '4')
+PATH_TO_DIGIT_CAPS = os.path.join(PATH_TO_VISUALIZATIONS, '4')
+PATH_TO_RECONSTRUCTION = os.path.join(PATH_TO_VISUALIZATIONS, '5')
+PATH_TO_RECONSTRUCTION_JSON_PARAMS = os.path.join(PATH_TO_VISUALIZATIONS, '6')
 
+if not os.path.exists(PATH_TO_INPUT_IMAGE):
+    os.mkdir(PATH_TO_INPUT_IMAGE)
 if not os.path.exists(PATH_TO_CONV1_KERNEL):
     os.mkdir(PATH_TO_CONV1_KERNEL)
-if not os.path.exists(PATH_TO_CONV1):
-    os.mkdir(PATH_TO_CONV1)
 if not os.path.exists(PATH_TO_RELU):
     os.mkdir(PATH_TO_RELU)
 if not os.path.exists(PATH_TO_PRIMARY_CAPS):
     os.mkdir(PATH_TO_PRIMARY_CAPS)
+if not os.path.exists(PATH_TO_DIGIT_CAPS):
+    os.mkdir(PATH_TO_DIGIT_CAPS)
 if not os.path.exists(PATH_TO_RECONSTRUCTION):
     os.mkdir(PATH_TO_RECONSTRUCTION)
+if not os.path.exists(PATH_TO_RECONSTRUCTION_JSON_PARAMS):
+    os.mkdir(PATH_TO_RECONSTRUCTION_JSON_PARAMS)
 
 # Input directories for layer weights.
 PATH_TO_WEIGHTS = 'numpy_weights'
@@ -82,6 +89,9 @@ def safe_norm(s, axis=-1, epsilon=1e-9, keepdims=False):
     squared_norm = np.sum(np.square(s), axis=axis, keepdims=keepdims)
     return np.sqrt(squared_norm + epsilon)
 
+# Save original image to the visualization folder.
+img = Image.open(os.path.join(PATH_TO_TEST_IMAGES_DIR, PATH_TO_TEST_IMAGE))
+image.imsave(os.path.join(PATH_TO_INPUT_IMAGE, '{}.png'.format(0)), img)
 
 for i in range(conv1.shape[3]):
     # Get the 9x9x1 filter:
@@ -90,7 +100,7 @@ for i in range(conv1.shape[3]):
     # Get rid of the last dimension (hence get 9x9):
     extracted_filter = np.squeeze(extracted_filter)
 
-    image.imsave(os.path.join(PATH_TO_CONV1_KERNEL, '{}.png'.format(i)), extracted_filter)
+    image.imsave(os.path.join(PATH_TO_CONV1_KERNEL, '{}.png'.format(i)), extracted_filter, vmin=-0.6064218, vmax=0.24946211)
 
     img = Image.open(os.path.join(PATH_TO_TEST_IMAGES_DIR, PATH_TO_TEST_IMAGE))
     arr2 = np.array(img.getdata(), dtype=np.uint8)
@@ -99,9 +109,6 @@ for i in range(conv1.shape[3]):
     arr2 = arr2[:, :, 1]
 
     conv = signal.correlate2d(arr2, extracted_filter, 'valid')
-
-    # I ignore vmin because then it will premeturely ReLU.
-    image.imsave(os.path.join(PATH_TO_CONV1, '{}.png'.format(i)), conv, cmap=CMAP, vmax=255)
 
     conv = conv + conv1_bias[i]
 
@@ -175,6 +182,9 @@ for x in range(0, NUMBER_OF_ROUNDS):
 # Estimate class
 y_proba = safe_norm(caps2_output, axis=-2)
 
+digit_caps_image = y_proba.reshape(10, 1)
+image.imsave(os.path.join(PATH_TO_DIGIT_CAPS, '{}.png'.format(0)), digit_caps_image, cmap=CMAP, vmin=0, vmax=1)
+
 y_proba_argmax = np.argmax(y_proba, axis=2)
 y_pred = np.squeeze(y_proba_argmax, axis=[1,2])
 
@@ -198,6 +208,10 @@ def ReLU_function(signal):
 
 
 output = reconstruction_input
+
+json_params = { 'vector': output.tolist(), 'prediction': int(y_pred)}
+with open(os.path.join(PATH_TO_RECONSTRUCTION_JSON_PARAMS, '{}.json'.format(0)), 'w') as outfile:
+    json.dump(json_params, outfile)
 
 fully_connected1 = fully_connected1.reshape(10, 16, 512)[y_pred]
 
