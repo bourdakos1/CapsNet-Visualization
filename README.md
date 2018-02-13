@@ -2,6 +2,8 @@
 
 ![](readme/4.gif)
 
+For more information on capsule networks check out my Medium articles [here](https://hackernoon.com/capsule-networks-are-shaking-up-ai-heres-how-to-use-them-c233a0971952) and [here](https://medium.freecodecamp.org/understanding-capsule-networks-ais-alluring-new-architecture-bdb228173ddc).
+
 ## Setup
 
 Use pip to install the required python packages:
