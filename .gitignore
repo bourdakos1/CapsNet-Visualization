@@ -1,3 +1,6 @@
+# runtime files
+reconstructions/
+
 # Checkpoint files
 /tensorflow_checkpoint/*
 
