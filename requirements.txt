@@ -2,7 +2,7 @@ bleach==1.5.0
 click>=6.7
 cycler>=0.10.0
 enum34>=1.1.6
-Flask==0.12.2
+Flask==1.0
 html5lib==0.9999999
 itsdangerous>=0.24
 Jinja2>=2.10
