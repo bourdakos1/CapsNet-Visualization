@@ -8,8 +8,7 @@ import matplotlib.image as image
 from matplotlib.colors import LinearSegmentedColormap
 from flask import Flask, send_from_directory, jsonify, request
 
-app = Flask(__name__, static_folder='')
-
+app = Flask(__name__, static_folder='client/build')
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
